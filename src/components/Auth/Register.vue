@@ -23,6 +23,8 @@
 
 <script>
 import { defineComponent } from 'vue';
+import { useMainStore } from 'stores/mainStore';
+import { mapActions } from 'pinia';
 import ClientForm from './ClientAuthForm.vue';
 import RestaurantForm from './RestaurantAuthForm.vue';
 
@@ -43,12 +45,15 @@ const RegisterPage = defineComponent({
     },
   },
   methods: {
-    handleSubmitted(payload) {
-      this.$api.post(`/api/${this.accountType}`, payload).then((res) => {
-        if (res.status === 201) {
-          this.$router.replace({ name: 'profile' });
-        }
-      });
+    ...mapActions(useMainStore, ['register']),
+    async handleSubmitted(payload) {
+      const requestWasSuccessful = await this.register(
+        payload,
+        this.accountType,
+      );
+      if (requestWasSuccessful === true) {
+        this.$router.replace({ name: 'profile' });
+      }
     },
     goToLoginPage() {
       this.$emit('show-login');
@@ -56,7 +61,6 @@ const RegisterPage = defineComponent({
   },
 });
 export default RegisterPage;
-
 </script>
 
 <style lang="scss">

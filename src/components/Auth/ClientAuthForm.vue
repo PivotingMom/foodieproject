@@ -5,7 +5,13 @@
     <q-input dense outlined v-model="firstName" type="text" label="Firstname" />
     <q-input dense outlined v-model="lastName" type="text" label="Lastname" />
 
-    <q-input dense outlined v-model="password" type="password" label="Password" />
+    <q-input
+      dense
+      outlined
+      v-model="password"
+      type="password"
+      label="Password"
+    />
     <q-input
       outlined
       v-model="c_password"

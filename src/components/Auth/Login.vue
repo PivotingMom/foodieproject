@@ -42,7 +42,7 @@
 <script>
 import { defineComponent } from 'vue';
 import { mapActions } from 'pinia';
-import { useAuthStore } from 'stores/auth';
+import { useMainStore } from 'stores/mainStore';
 
 const LoginPage = defineComponent({
   name: 'LoginPage',
@@ -59,14 +59,14 @@ const LoginPage = defineComponent({
     },
   },
   methods: {
-    ...mapActions(useAuthStore, ['login']),
+    ...mapActions(useMainStore, ['login']),
     async onSubmit() {
       const payload = {
         email: this.email,
         password: this.password,
       };
       const requestWasSuccessful = await this.login(payload, this.accountType);
-      if (requestWasSuccessful) {
+      if (requestWasSuccessful === true) {
         this.$router.replace({ name: 'profile' });
       }
     },
