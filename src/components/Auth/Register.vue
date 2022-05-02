@@ -9,7 +9,7 @@
           <q-radio v-model="accountType" val="client" label="Client" />
         </div>
         <ClientForm @submitted="handleSubmitted" v-if="isClient" />
-        <RestaurantForm v-else />
+        <RestaurantForm @submitted="handleSubmitted" v-else />
       </q-card-section>
     </q-card>
     <q-btn
@@ -60,6 +60,7 @@ const RegisterPage = defineComponent({
     },
   },
 });
+
 export default RegisterPage;
 </script>
 

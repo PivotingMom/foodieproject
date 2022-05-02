@@ -27,6 +27,8 @@
         color="black"
         :disable="!clientFormIsValid"
       />
+      <!-- the button should be disabled if the value of clientFormIsValid is true.
+      That means only when the form is valid should the button be enabled -->
     </div>
   </q-form>
 </template>

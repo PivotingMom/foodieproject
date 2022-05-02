@@ -18,6 +18,8 @@ export const useMainStore = defineStore('mainStore', {
         const response = await api.post(`/api/${accountType}-login`, payload);
         if (response.status === 201) {
           this.setCookie('token', response.data.token);
+          this.setCookie('restaurantId', response.data.restaurantId);
+          this.setCookie('clientId', response.data.clientId);
           return true;
         }
         return false;
@@ -43,6 +45,8 @@ export const useMainStore = defineStore('mainStore', {
 
         if (response.status === 201) {
           this.setCookie('token', response.data.token);
+          this.setCookie('restaurantId', response.data.restaurantId);
+          this.setCookie('clientId', response.data.clientId);
           return true;
         }
         return false;
