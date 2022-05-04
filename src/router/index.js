@@ -1,4 +1,5 @@
 import { route } from 'quasar/wrappers';
+import { Cookies } from 'quasar';
 import {
   createRouter, createMemoryHistory, createWebHistory, createWebHashHistory,
 } from 'vue-router';
@@ -26,6 +27,17 @@ export default route((/* { store, ssrContext } */) => {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE),
+  });
+
+  Router.beforeEach((to, from, next) => {
+    const token = Cookies.get('token');
+    const pageRequiresAuth = to.meta.requiresAuthentication;
+
+    if (pageRequiresAuth && !token) {
+      next('/auth');
+    } else {
+      next();
+    }
   });
 
   return Router;

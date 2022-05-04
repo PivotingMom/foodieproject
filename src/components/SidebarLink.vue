@@ -1,20 +1,16 @@
 <template>
   <q-item
+    class="text-subtitle1"
     clickable
-    tag="a"
-    target="_blank"
-    :href="link"
+    @click="handleClicked"
+    :to="{ name: to }"
   >
-    <q-item-section
-      v-if="icon"
-      avatar
-    >
+    <q-item-section v-if="icon" avatar>
       <q-icon :name="icon" />
     </q-item-section>
 
     <q-item-section>
       <q-item-label>{{ title }}</q-item-label>
-      <q-item-label caption>{{ caption }}</q-item-label>
     </q-item-section>
   </q-item>
 </template>
@@ -23,26 +19,24 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'EssentialLink',
+  name: 'SidebarLink',
   props: {
     title: {
       type: String,
       required: true,
     },
-
-    caption: {
-      type: String,
-      default: '',
-    },
-
-    link: {
-      type: String,
-      default: '#',
-    },
-
     icon: {
       type: String,
       default: '',
+    },
+    to: {
+      type: String,
+      default: 'auth',
+    },
+  },
+  methods: {
+    handleClicked() {
+      this.$emit('clicked');
     },
   },
 });

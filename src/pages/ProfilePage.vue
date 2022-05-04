@@ -1,5 +1,6 @@
 <template>
-  <q-page>
+  <q-page class="flex flex-centre column">
+    <h4>Update Your Profile</h4>
     <ClientForm />
   </q-page>
 </template>

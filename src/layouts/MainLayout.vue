@@ -17,12 +17,14 @@
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label header> Essential Links </q-item-label>
+        <q-item-label class="q-mb-xl" header> Menu Links </q-item-label>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
+        <SidebarLink
+          v-for="(link, index) in sidebarlinks"
+          :key="index"
+          :icon="link.icon"
+          :to="link.to"
+          :title="link.title"
         />
       </q-list>
     </q-drawer>
@@ -34,67 +36,46 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
-import EssentialLink from 'components/EssentialLink.vue';
+import { defineComponent } from 'vue';
+import SidebarLink from 'src/components/SidebarLink.vue';
 
-const linksList = [
+const sidebarlinks = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev',
+    title: 'Dashboard',
+    icon: 'dashboard',
+    to: 'dashboard',
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework',
+    title: 'Manage Profile',
+    icon: 'person',
+    to: 'profile',
   },
   {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev',
+    title: 'Create Menus',
+    icon: 'assignment',
+    to: 'menu',
   },
   {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev',
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev',
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev',
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev',
+    title: 'Logout',
+    icon: 'logout',
+    to: 'auth',
   },
 ];
 export default defineComponent({
   name: 'MainLayout',
   components: {
-    EssentialLink,
+    SidebarLink,
   },
-  setup() {
-    const leftDrawerOpen = ref(false);
+  data() {
     return {
-      essentialLinks: linksList,
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
+      sidebarlinks,
+      leftDrawerOpen: false,
     };
+  },
+  methods: {
+    toggleLeftDrawer() {
+      this.leftDrawerOpen = !this.leftDrawerOpen;
+    },
   },
 });
 </script>
