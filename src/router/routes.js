@@ -14,8 +14,6 @@ const routes = [
     children: [
       { path: '', name: 'dashboard', component: () => import('src/pages/Dashboard.vue') },
       { path: 'profile', name: 'profile', component: () => import('pages/ProfilePage.vue') },
-    ],
-  },
   // Always leave this as last one,
   // but you can also remove it
   {

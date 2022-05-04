@@ -8,7 +8,8 @@
     <q-input dense outlined v-model="form.email" type="email" label="Email" />
     <q-input dense outlined v-model="form.password" type="password" label="Password" />
      <q-input dense outlined v-model="confirmPassword" type="password" label="Confirm Password" />
-    <q-input dense outlined v-model="form.phoneNum" type="text" label="Phone Number" />
+    <q-input dense outlined v-model="form.phoneNum" type="text"
+    label="Phone-number" placeholder="000-000-0000"/>
     <q-input dense outlined v-model="form.profileUrl" type="url" label="ProfileUrl" />
     <div>
       <q-btn

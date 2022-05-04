@@ -5,7 +5,7 @@
     </div>
     <ClientDashboardInfo />
     <img
-      alt="Quasar logo"
+      alt="chop-app logo"
       src="https://media.istockphoto.com/vectors/order-grocery-online-vector-id1222105389?k=20&m=1222105389&s=612x612&w=0&h=BTcym-zKExEzoBh98z4Dmi5L-diDT6lUiSTQCacYigM="
     />
   </q-page>

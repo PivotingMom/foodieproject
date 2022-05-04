@@ -100,6 +100,26 @@ export const useMainStore = defineStore('mainStore', {
         return false;
       }
     },
+    async getRestaurant() {
+      Loading.show();
+
+      try {
+        api.defaults.headers.token = Cookies.get('token');
+        const response = await api.get('/api/restaurant');
+
+        if (response.status === 200) {
+          const restaurant = response.data[0];
+          this.restaurantDetails = restaurant;
+          return true;
+        }
+        return false;
+      } catch (error) {
+        Notify.create({ type: 'negative', message: 'An error occurred', position: 'center' });
+        return true;
+      } finally {
+        Loading.hide();
+      }
+    },
     setCookie(name, payload) {
       Cookies.set(name, payload);
     },
@@ -110,6 +130,7 @@ export const useMainStore = defineStore('mainStore', {
   getters: {
     token: (state) => state.token,
     clientId: (state) => state.clientId,
+    restaurantId: (state) => state.restaurantId,
     totalOrders: (state) => state.orders.length,
   },
 });
