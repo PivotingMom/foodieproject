@@ -25,6 +25,7 @@
           :icon="link.icon"
           :to="link.to"
           :title="link.title"
+          @clicked="handleClicked"
         />
       </q-list>
     </q-drawer>
@@ -38,6 +39,9 @@
 <script>
 import { defineComponent } from 'vue';
 import SidebarLink from 'src/components/SidebarLink.vue';
+import { useMainStore } from 'stores/mainStore';
+import { mapActions } from 'pinia';
+import { Cookies } from 'quasar';
 
 const sidebarlinks = [
   {
@@ -58,7 +62,7 @@ const sidebarlinks = [
   {
     title: 'Logout',
     icon: 'logout',
-    to: 'auth',
+    to: 'logout',
   },
 ];
 export default defineComponent({
@@ -72,9 +76,31 @@ export default defineComponent({
       leftDrawerOpen: false,
     };
   },
+  computed: {
+    accountType() {
+      const restauarantId = Cookies.get('restaurantId');
+      const clientId = Cookies.get('clientId');
+      if (restauarantId) {
+        return 'restaurant';
+      }
+      if (clientId) {
+        return 'client';
+      }
+      return null;
+    },
+  },
   methods: {
+    ...mapActions(useMainStore, ['logout']),
     toggleLeftDrawer() {
       this.leftDrawerOpen = !this.leftDrawerOpen;
+    },
+    async handleClicked(data) {
+      if (data === 'logout') {
+        const requestWasSuccessful = await this.logout(this.accountType);
+        if (requestWasSuccessful === true) {
+          this.$router.replace({ name: 'auth' });
+        }
+      }
     },
   },
 });

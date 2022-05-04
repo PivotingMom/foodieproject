@@ -1,20 +1,46 @@
-import { store } from 'quasar/wrappers';
-import { createPinia } from 'pinia';
+import { route } from 'quasar/wrappers';
+import { Cookies } from 'quasar';
+import {
+  createRouter, createMemoryHistory, createWebHistory, createWebHashHistory,
+} from 'vue-router';
+import routes from './src/router/index.js';
 
 /*
  * If not building with SSR mode, you can
- * directly export the Store instantiation;
+ * directly export the Router instantiation;
  *
  * The function below can be async too; either use
  * async/await or return a Promise which resolves
- * with the Store instance.
+ * with the Router instance.
  */
 
-export default store((/* { ssrContext } */) => {
-  const pinia = createPinia();
+export default route((/* { store, ssrContext } */) => {
+  const createHistory = process.env.SERVER
+    ? createMemoryHistory
+    : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory);
 
-  // You can add Pinia plugins here
-  // pinia.use(SomePiniaPlugin)
+  const Router = createRouter({
+    scrollBehavior: () => ({ left: 0, top: 0 }),
+    routes,
 
-  return pinia;
+    // Leave this as is and make changes in quasar.conf.js instead!
+    // quasar.conf.js -> build -> vueRouterMode
+    // quasar.conf.js -> build -> publicPath
+    history: createHistory(process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE),
+  });
+  // run this hook before each navigation.
+  Router.beforeEach((to, from, next) => {
+    const token = Cookies.get('token');
+    const pageRequiresAuth = to.meta.requiresAuthentication;
+
+    if (pageRequiresAuth && !token) {
+      next('/auth');
+    } else if (!pageRequiresAuth && token) {
+      next('/app');
+    } else {
+      next();
+    }
+  });
+
+  return Router;
 });

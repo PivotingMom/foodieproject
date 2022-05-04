@@ -36,7 +36,7 @@ export default defineComponent({
   },
   methods: {
     handleClicked() {
-      this.$emit('clicked');
+      this.$emit('clicked', this.to);
     },
   },
 });

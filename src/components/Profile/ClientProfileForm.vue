@@ -1,5 +1,8 @@
 <template>
   <q-card class="clientProfileForm">
+    <div class="flex justify-center q-pt-md">
+      <img :src="form.pictureUrl" alt="" class="avatar" width="200" />
+    </div>
     <q-card-section>
       <q-form @submit="handleSubmit" class="q-gutter-md">
         <q-input
@@ -37,8 +40,20 @@
           label="Password"
           outlined
         />
+        <q-input
+          dense
+          v-model="form.pictureUrl"
+          type="text"
+          label="Picture URL"
+          outlined
+        />
         <div>
-          <q-btn label="Update Profile" type="submit" color="dark" />
+          <q-btn
+            :disable="!formIsValid"
+            label="Update Profile"
+            type="submit"
+            color="dark"
+          />
         </div>
       </q-form>
     </q-card-section>
@@ -46,6 +61,7 @@
 </template>
 
 <script>
+/* eslint-disable operator-linebreak */
 import { defineComponent } from 'vue';
 import { mapActions, mapState } from 'pinia';
 import { useMainStore } from 'stores/mainStore';
@@ -59,33 +75,50 @@ const ClientProfileForm = defineComponent({
         username: '',
         firstName: '',
         lastName: '',
+        password: '',
+        pictureUrl: '',
       },
+      optionalFields: ['pictureUrl', 'password'],
+      accountType: null,
     };
   },
   computed: {
     ...mapState(useMainStore, ['clientDetails']),
+    formIsValid() {
+      return (
+        !!this.form.email &&
+        !!this.form.username &&
+        !!this.form.firstName &&
+        !!this.form.lastName
+      );
+    },
   },
-  mounted() {
-    this.getClient();
+  async mounted() {
+    this.accountType = this.getAccountType();
+    await this.getClient();
     this.setDefaultValues();
   },
   methods: {
-    ...mapActions(useMainStore, ['getClient']),
+    ...mapActions(useMainStore, [
+      'getClient',
+      'updateProfile',
+      'getAccountType',
+    ]),
     setDefaultValues() {
       this.form.email = this.clientDetails.email;
       this.form.username = this.clientDetails.username;
       this.form.firstName = this.clientDetails.firstName;
       this.form.lastName = this.clientDetails.lastName;
+      this.form.pictureUrl = this.clientDetails.pictureUrl;
     },
-    handleSubmit() {
-      // flow
-      // update profile
-      // go to store -> mainStore
-      // create new action called update profile
-      // payload
-      // show loading, await response, check status code, return true of false,
-      // wrap everything in try catch
-      // hide loading in finally block
+    async handleSubmit() {
+      const payload = this.form;
+      Object.keys(payload).forEach((key) => {
+        if (!payload[key] && this.optionalFields.includes(key)) {
+          delete payload[key];
+        }
+      });
+      await this.updateProfile(this.form, this.accountType);
     },
   },
 });
@@ -95,5 +128,8 @@ export default ClientProfileForm;
 <style lang="scss">
 .clientProfileForm {
   width: 500px;
+}
+.avatar {
+  border-radius: 5%;
 }
 </style>
