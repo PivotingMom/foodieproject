@@ -1,14 +1,11 @@
 <template>
   <q-page class="flex flex-center column">
-    <div v-if="clientDetails"
-
-    class="text-h3 q-mb-md">
-      Hi, {{ clientDetails.lastName }}👋
-      Hi, {{ restaurantDetails.lastName }}👋
-
+    <div class="text-h3 q-mb-md">
+      <span v-if="isClient && clientDetails"> Hi, {{ clientDetails.lastName }}👋</span>
+    <span v-if="isRestaurant && restaurantDetails"> Hi, {{ restaurantDetails.name }}👋</span>
     </div>
-    <ClientDashboardInfo />
-    <RestaurantDashboardInfo/>
+    <ClientDashboardInfo v-if="isClient && clientDetails" />
+    <RestaurantDashboardInfo v-if="isRestaurant && restaurantDetails" />
     <img
       alt="chop-app logo"
       src="https://media.istockphoto.com/vectors/order-grocery-online-vector-id1222105389?k=20&m=1222105389&s=612x612&w=0&h=BTcym-zKExEzoBh98z4Dmi5L-diDT6lUiSTQCacYigM="
@@ -31,15 +28,26 @@ export default defineComponent({
     RestaurantDashboardInfo,
   },
   computed: {
-    ...mapState(useMainStore, ['clientDetails']),
+    ...mapState(useMainStore, ['clientDetails', 'restaurantDetails', 'restaurantId', 'clientId']),
+    isClient() {
+      return this.getAccountType() === 'client';
+    },
+    isRestaurant() {
+      return this.getAccountType() === 'restaurant';
+    },
   },
   mounted() {
-    this.getClient();
-    this.getRestaurant();
-    this.getOrders();
+    if (this.getAccountType() === 'client') {
+      this.getClient();
+      this.getOrders();
+    }
+    if (this.getAccountType() === 'restaurant') {
+      this.getRestaurant(this.restaurantId);
+      this.getMenus();
+    }
   },
   methods: {
-    ...mapActions(useMainStore, ['getClient', 'getRestaurant', 'getOrders']),
+    ...mapActions(useMainStore, ['getClient', 'getRestaurant', 'getOrders', 'getAccountType', 'getMenus']),
   },
 });
 </script>

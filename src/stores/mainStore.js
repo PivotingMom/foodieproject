@@ -4,10 +4,13 @@ import { api } from 'src/boot/axios';
 
 export const useMainStore = defineStore('mainStore', {
   state: () => ({
-    clientId: null,
-    token: null,
+    clientId: Cookies.get('clientId') || null, // check cookie first before  rendering it to null
+    restaurantId: Cookies.get('restaurantId') || null,
+    token: Cookies.get('token') || null,
     clientDetails: null,
+    restaurantDetails: null,
     orders: [],
+    menus: [],
   }),
   actions: {
     async login(payload, accountType) {
@@ -18,6 +21,11 @@ export const useMainStore = defineStore('mainStore', {
           this.setCookie('token', response.data.token);
           this.setCookie('clientId', response.data.clientId);
           this.setCookie('restaurantId', response.data.restaurantId);
+
+          // destructure the restaurantId property from the response.data object
+          const { restaurantId, clientId } = response.data;
+          this.restaurantId = restaurantId;
+          this.clientId = clientId;
 
           return true;
         }
@@ -110,6 +118,27 @@ export const useMainStore = defineStore('mainStore', {
         Loading.hide();
       }
     },
+
+    async getRestaurant(restaurantId) {
+      Loading.show();
+
+      try {
+        api.defaults.headers.token = Cookies.get('token');
+        const response = await api.get(`/api/restaurant?restaurantId=${restaurantId}`);
+
+        if (response.status === 200) {
+          const restaurant = response.data[0];
+          this.restaurantDetails = restaurant;
+          return true;
+        }
+        return false;
+      } catch (error) {
+        Notify.create({ type: 'negative', message: 'An error occurred', position: 'center' });
+        return true;
+      } finally {
+        Loading.hide();
+      }
+    },
     async getOrders() {
       Loading.show();
 
@@ -119,6 +148,24 @@ export const useMainStore = defineStore('mainStore', {
 
         if (response.status === 200) {
           this.orders = response.data;
+          return true;
+        }
+        return false;
+      } catch (error) {
+        Notify.create({ type: 'negative', message: 'An error occurred', position: 'center' });
+        return false;
+      }
+    },
+
+    async getMenus() {
+      Loading.show();
+
+      try {
+        // no need for header token, its not required, opened.
+        const response = await api.get('/api/menu');
+
+        if (response.status === 200) {
+          this.menus = response.data;
           return true;
         }
         return false;
@@ -147,10 +194,10 @@ export const useMainStore = defineStore('mainStore', {
       }
     },
     getAccountType() {
-      const restauarantId = Number(Cookies.get('restaurantId'));
+      const restaurantId = Number(Cookies.get('restaurantId'));
       const clientId = Number(Cookies.get('clientId'));
 
-      if (restauarantId) {
+      if (restaurantId) {
         return 'restaurant';
       }
       if (clientId) {
@@ -166,9 +213,11 @@ export const useMainStore = defineStore('mainStore', {
     },
   },
   getters: {
-    token: (state) => state.token,
-    clientId: (state) => state.clientId,
-    totalOrders: (state) => state.orders.length,
-    restauarantId: (state) => state.restaurantId,
+    getToken: (state) => state.token,
+    getClientId: (state) => state.clientId,
+    getTotalOrders: (state) => state.orders.length,
+    getTotalMenus: (state) => state.menus.length,
+    getRestaurantId: (state) => state.restaurantId,
+
   },
 });

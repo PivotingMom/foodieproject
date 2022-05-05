@@ -78,9 +78,9 @@ export default defineComponent({
   },
   computed: {
     accountType() {
-      const restauarantId = Cookies.get('restaurantId');
+      const restaurantId = Cookies.get('restaurantId');
       const clientId = Cookies.get('clientId');
-      if (restauarantId) {
+      if (restaurantId) {
         return 'restaurant';
       }
       if (clientId) {

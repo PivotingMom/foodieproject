@@ -18,14 +18,14 @@
         />
         <q-input
           dense
-          v-model="bannerUrl"
+          v-model="form.bannerUrl"
           type="text"
           label="Bannerurl"
           outlined
         />
         <q-input
           dense
-          v-model="bio"
+          v-model="form.bio"
           type="text"
           label="Bio"
           outlined
@@ -52,7 +52,12 @@
           outlined
         />
         <div>
-          <q-btn label="Update Profile" type="submit" color="dark" />
+          <q-btn
+            :disable="!formIsValid"
+            label="Update Profile"
+            type="submit"
+            color="dark"
+          />
         </div>
       </q-form>
     </q-card-section>
@@ -74,23 +79,37 @@ const RestaurantProfileForm = defineComponent({
         cityName: '',
         email: '',
         phoneNum: '',
-      },
-      optionalFields: {
         bannerUrl: '',
         bio: '',
         profileUrl: '',
+
       },
+      optionalFields: [
+        'bannerUrl',
+        'bio',
+        'profileUrl',
+      ],
+      accountType: null,
     };
   },
   computed: {
-    ...mapState(useMainStore, ['restaurantDetails']),
+    ...mapState(useMainStore, ['restaurantDetails', 'restaurantId']),
+    formIsValid() {
+      return (
+        !!this.form.name
+        && !!this.form.address
+        && !!this.form.cityName
+        && !!this.form.email
+      );
+    },
   },
-  mounted() {
-    this.getRestaurant();
+  async mounted() {
+    this.accountType = this.getAccountType();
+    await this.getRestaurant(this.restaurantId);
     this.setDefaultValues();
   },
   methods: {
-    ...mapActions(useMainStore, ['getRestaurant']),
+    ...mapActions(useMainStore, ['getRestaurant', 'getAccountType']),
     setDefaultValues() {
       this.form.name = this.restaurantDetails.name;
       this.form.address = this.restaurantDetails.address;
@@ -98,15 +117,14 @@ const RestaurantProfileForm = defineComponent({
       this.form.email = this.restaurantDetails.email;
       this.form.phoneNum = this.restaurantDetails.phoneNum;
     },
-    handleSubmit() {
-      // flow
-      // update profile
-      // go to store -> mainStore
-      // create new action called update profile
-      // payload
-      // show loading, await response, check status code, return true of false,
-      // wrap everything in try catch
-      // hide loading in finally block
+    async handleSubmit() {
+      const payload = this.form;
+      Object.keys(payload).forEach((key) => {
+        if (!payload[key] && this.optionalFields.includes(key)) {
+          delete payload[key];
+        }
+      });
+      await this.updateProfile(this.form, this.accountType);
     },
   },
 });
