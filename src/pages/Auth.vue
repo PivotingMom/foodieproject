@@ -1,3 +1,4 @@
+<!-- layout/pages that holds our constructed components, visible to the user-->
 <template>
   <q-page class="full-height">
     <div class="row window-height">

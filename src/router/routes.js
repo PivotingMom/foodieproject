@@ -13,6 +13,7 @@ const routes = [
     children: [
       { path: '', name: 'dashboard', component: () => import('src/pages/Dashboard.vue') },
       { path: 'profile', name: 'profile', component: () => import('pages/ProfilePage.vue') },
+      { path: 'menu', name: 'menu', component: () => import('pages/MenuPage.vue') },
     ],
   },
   // Always leave this as last one,

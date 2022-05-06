@@ -28,6 +28,7 @@ import { mapActions } from 'pinia';
 import ClientForm from './ClientAuthForm.vue';
 import RestaurantForm from './RestaurantAuthForm.vue';
 
+// <!-- imported client and restaurant form component to use in register component -->
 const RegisterPage = defineComponent({
   name: 'RegisterPage',
   components: {

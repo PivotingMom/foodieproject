@@ -1,3 +1,4 @@
+<!-- New client login form page, template is from quasar-->
 <template>
   <div class="login">
     <h4>Login</h4>
@@ -9,6 +10,7 @@
           <q-radio v-model="accountType" val="client" label="Client" />
         </div>
         <q-form @submit.prevent="onSubmit" class="q-gutter-md">
+          <!-- .prevent discourages the default window reaction-->
           <q-input dense v-model="email" type="email" label="Email" outlined />
           <q-input
             dense
@@ -69,6 +71,8 @@ const LoginPage = defineComponent({
       if (requestWasSuccessful === true) {
         this.$router.replace({ name: 'profile' });
       }
+    /*  <!-- async is always accompanied by an await means -
+     wait for the promise before you run --> */
     },
     goToRegisterPage() {
       this.$emit('hide-login');

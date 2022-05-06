@@ -1,3 +1,4 @@
+<!-- New client registration form page, template is from quasar-->
 <template>
   <q-form @submit="onSubmit" class="q-gutter-md">
     <q-input dense outlined v-model="email" type="email" label="Email" />
@@ -28,16 +29,18 @@
         :disable="!clientFormIsValid"
       />
       <!-- the button should be disabled if the value of clientFormIsValid is true.
-      That means only when the form is valid should the button be enabled -->
+      This means only when the form the form is currently filled should the button be clickable -->
     </div>
   </q-form>
 </template>
+
+<!-- personal note: my learning ref https://www.section.io/engineering-education/getting-started-with-quasar-framework/  -->
 
 <script>
 /* eslint-disable operator-linebreak */
 import { defineComponent } from 'vue';
 
-const ClientForm = defineComponent({
+const ClientForm = defineComponent({ // lingo: defined vue instance
   name: 'ClientForm',
   data() {
     return {
@@ -49,6 +52,7 @@ const ClientForm = defineComponent({
       c_password: '',
     };
   },
+  /* <!-- why computed? it has cache, & the ability to check for changes in dependecies --> */
   computed: {
     clientFormIsValid() {
       if (
@@ -64,7 +68,7 @@ const ClientForm = defineComponent({
       return false;
     },
   },
-  methods: {
+  methods: { // listens for events that doesnt need 'computing' from template
     onSubmit() {
       const payload = {
         email: this.email,
@@ -73,7 +77,7 @@ const ClientForm = defineComponent({
         lastName: this.lastName,
         password: this.password,
       };
-      this.$emit('submitted', payload);
+      this.$emit('submitted', payload); // emit - the message / output that goes out to the parent component -register
     },
   },
 });

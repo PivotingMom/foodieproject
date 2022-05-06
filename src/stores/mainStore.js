@@ -156,13 +156,37 @@ export const useMainStore = defineStore('mainStore', {
         return false;
       }
     },
+    async createMenu(payload) {
+      Loading.show();
+      try {
+        api.defaults.headers.token = Cookies.get('token');
+        const response = await api.post('/api/menu', payload);
 
-    async getMenus() {
+        if (response.status === 201) {
+          Notify.create({
+            message: 'menu created succesfully',
+            position: 'center',
+            type: 'positive',
+          });
+          return true;
+        }
+
+        return false;
+      } catch (error) {
+        Notify.create({ type: 'negative', message: 'menu creation failed', position: 'center' });
+        return false;
+      } finally {
+        Loading.hide();
+      }
+    },
+
+    async getMenus(restaurantId, menuId) {
       Loading.show();
 
       try {
         // no need for header token, its not required, opened.
-        const response = await api.get('/api/menu');
+        // query parameters added to the url as optional args
+        const response = await api.get(`/api/menu?restaurantId=${restaurantId}&menuId=${menuId}`);
 
         if (response.status === 200) {
           this.menus = response.data;
@@ -170,8 +194,10 @@ export const useMainStore = defineStore('mainStore', {
         }
         return false;
       } catch (error) {
-        Notify.create({ type: 'negative', message: 'An error occurred', position: 'center' });
+        Notify.create({ type: 'negative', message: 'no menu fetched', position: 'center' });
         return false;
+      } finally {
+        Loading.hide();
       }
     },
     async updateProfile(payload, accountType) {
@@ -204,6 +230,28 @@ export const useMainStore = defineStore('mainStore', {
         return 'client';
       }
       return null;
+    },
+    async deleteClientProfile() {
+      Loading.show();
+
+      try {
+        api.defaults.headers.token = Cookies.get('token');
+        const response = await api.delete('/api/client');
+
+        if (response.status === 204) {
+          this.removeCookie('token');
+          this.removeCookie('clientId');
+          this.removeCookie('restaurantId');
+          Notify.create({ type: 'positive', message: 'Profile deleted successfully', position: 'center' });
+          return true;
+        }
+        return false;
+      } catch (error) {
+        Notify.create({ type: 'negative', message: 'Profile delete failed', position: 'center' });
+        return false;
+      } finally {
+        Loading.hide();
+      }
     },
     setCookie(name, payload) {
       Cookies.set(name, payload);

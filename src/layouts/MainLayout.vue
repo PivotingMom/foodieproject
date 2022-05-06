@@ -55,7 +55,7 @@ const sidebarlinks = [
     to: 'profile',
   },
   {
-    title: 'Create Menus',
+    title: 'Menus',
     icon: 'assignment',
     to: 'menu',
   },

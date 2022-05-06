@@ -57,6 +57,14 @@
         </div>
       </q-form>
     </q-card-section>
+    <q-card-section>
+      <q-btn
+      @click="deleteProfile"
+        label="Delete Profile"
+        type="button"
+        color="negative"
+      />
+    </q-card-section>
   </q-card>
 </template>
 
@@ -103,6 +111,7 @@ const ClientProfileForm = defineComponent({
       'getClient',
       'updateProfile',
       'getAccountType',
+      'deleteClientProfile',
     ]),
     setDefaultValues() {
       this.form.email = this.clientDetails.email;
@@ -120,6 +129,13 @@ const ClientProfileForm = defineComponent({
       });
       await this.updateProfile(this.form, this.accountType);
     },
+    async deleteProfile() {
+      const requestWasSuccessful = await this.deleteClientProfile();
+      if (requestWasSuccessful === true) {
+        this.$router.replace({ name: 'register' });
+      }
+    },
+
   },
 });
 export default ClientProfileForm;

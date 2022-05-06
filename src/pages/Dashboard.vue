@@ -37,6 +37,8 @@ export default defineComponent({
     },
   },
   mounted() {
+  /*   //  It is most often used tosend an HTTP request to
+  fetch datathat the component will then render. // */
     if (this.getAccountType() === 'client') {
       this.getClient();
       this.getOrders();
