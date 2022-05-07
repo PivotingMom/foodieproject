@@ -1,8 +1,15 @@
 <template>
   <q-card bordered flat class="menuList">
-    <h6>Create Menu</h6>
     <q-card-section>
-      <q-form @submit="createMenu" class="q-gutter-md">
+      <h6>Create Menu</h6>
+      <q-form @submit="handleSubmitted" class="q-gutter-md">
+        <q-input
+          dense
+          v-model="form.name"
+          type="text"
+          label="Name"
+          outlined
+        />
         <q-input
           dense
           v-model="form.description"
@@ -12,22 +19,15 @@
         />
         <q-input
           dense
-          v-model="form.name"
-          type="text"
-          label="Menu Name"
-          outlined
-        />
-        <q-input
-          dense
           v-model="form.price"
-          type="number"
+          type="text"
           label="Price"
           outlined
         />
         <q-input
           dense
           v-model="form.imageUrl"
-          type="text"
+          type="url"
           label="Image"
           outlined
         />
@@ -51,8 +51,8 @@ const CreateMenu = defineComponent({
   data() {
     return {
       form: {
-        description: '',
         name: '',
+        description: '',
         price: '',
         imageUrl: '',
       },
@@ -63,9 +63,6 @@ const CreateMenu = defineComponent({
   },
   computed: {
     ...mapState(useMainStore, ['restaurantId']),
-  },
-  mounted() {
-
   },
   methods: {
     ...mapActions(useMainStore, ['getMenus', 'createMenu']),
@@ -80,7 +77,7 @@ const CreateMenu = defineComponent({
         payload,
       );
       if (requestWasSuccessful === true) {
-        this.getMenus(this.restaurantIdc);
+        this.getMenus(this.restaurantId);
       }
     },
   },

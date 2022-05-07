@@ -11,6 +11,7 @@ export const useMainStore = defineStore('mainStore', {
     restaurantDetails: null,
     orders: [],
     menus: [],
+    restaurants: [],
   }),
   actions: {
     async login(payload, accountType) {
@@ -124,10 +125,15 @@ export const useMainStore = defineStore('mainStore', {
 
       try {
         api.defaults.headers.token = Cookies.get('token');
-        const response = await api.get(`/api/restaurant?restaurantId=${restaurantId}`);
+        let url = 'restaurant';
+        if (restaurantId) {
+          url = `${url}?restaurantId=${restaurantId}`;
+        }
+        const response = await api.get(`/api/${url}`);
 
         if (response.status === 200) {
           const restaurant = response.data[0];
+          this.restaurants = response.data;
           this.restaurantDetails = restaurant;
           return true;
         }
@@ -179,14 +185,59 @@ export const useMainStore = defineStore('mainStore', {
         Loading.hide();
       }
     },
+    async deleteMenu(payload) {
+      Loading.show();
 
+      try {
+        api.defaults.headers.token = Cookies.get('token');
+        const response = await api.delete('/api/menu', payload);
+
+        if (response.status === 204) {
+          Notify.create({ type: 'positive', message: 'menu deleted', position: 'center' });
+          return true;
+        }
+        return false;
+      } catch (error) {
+        Notify.create({ type: 'negative', message: 'menu delete failed', position: 'center' });
+        return false;
+      } finally {
+        Loading.hide();
+      }
+    },
+    async updateMenu(payload) {
+      Loading.show();
+
+      try {
+        api.defaults.headers.token = Cookies.get('token');
+        const response = await api.patch('/api/menu', payload);
+
+        if (response.status === 200) {
+          Notify.create({ type: 'positive', message: 'menu updated successfully', position: 'center' });
+          return true;
+        }
+        return false;
+      } catch (error) {
+        Notify.create({ type: 'negative', message: 'menu update failed', position: 'center' });
+        return false;
+      } finally {
+        Loading.hide();
+      }
+    },
     async getMenus(restaurantId, menuId) {
       Loading.show();
 
       try {
         // no need for header token, its not required, opened.
         // query parameters added to the url as optional args
-        const response = await api.get(`/api/menu?restaurantId=${restaurantId}&menuId=${menuId}`);
+        let url = '/menu';
+        if (restaurantId) {
+          url = `${url}?restaurantId=${restaurantId}`;
+        }
+        if (menuId) {
+          url = `${url}&menuId=${menuId}`;
+        }
+
+        const response = await api.get(`/api${url}`);
 
         if (response.status === 200) {
           this.menus = response.data;

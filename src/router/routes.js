@@ -1,5 +1,16 @@
 const routes = [
   {
+    path: '/',
+    name: 'explore',
+    component: () => import('pages/ExplorePage.vue'),
+  },
+  {
+    path: '/view-menu/:id',
+    name: 'view-menu',
+    props: true,
+    component: () => import('pages/ViewMenu.vue'),
+  },
+  {
     path: '/auth',
     component: () => import('layouts/AuthLayout.vue'),
     children: [

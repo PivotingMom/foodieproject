@@ -1,7 +1,10 @@
 <template>
-  <q-page class="flex" padding>
+  <q-page class="flex column" padding>
+    <div class="q-mb-md">
+      <q-btn @click="showCreateMenu" label="Show Menu Form" color="dark" />
+    </div>
+    <CreateMenu v-if="showForm" />
     <MenuList />
-    <CreateMenu />
   </q-page>
 </template>
 <script>
@@ -14,6 +17,16 @@ const MenuPage = defineComponent({
   components: {
     MenuList,
     CreateMenu,
+  },
+  data() {
+    return {
+      showForm: false,
+    };
+  },
+  methods: {
+    showCreateMenu() {
+      this.showForm = true;
+    },
   },
 });
 
