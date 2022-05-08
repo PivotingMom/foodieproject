@@ -25,6 +25,9 @@
           :icon="link.icon"
           :to="link.to"
           :title="link.title"
+          :accountType="accountType"
+          :forRestaurantOnly="link.forRestaurantOnly"
+          :forClientOnly="link.forClientOnly"
           @clicked="handleClicked"
         />
       </q-list>
@@ -45,6 +48,12 @@ import { Cookies } from 'quasar';
 
 const sidebarlinks = [
   {
+    title: 'Explore',
+    icon: 'search',
+    to: 'explore',
+    forClientOnly: true,
+  },
+  {
     title: 'Dashboard',
     icon: 'dashboard',
     to: 'dashboard',
@@ -58,11 +67,19 @@ const sidebarlinks = [
     title: 'Menus',
     icon: 'assignment',
     to: 'menu',
+    forRestaurantOnly: true,
   },
   {
-    title: 'my Order',
+    title: 'My Order',
     icon: 'assignment',
     to: 'My orders',
+    forClientOnly: true,
+  },
+  {
+    title: 'Manage Orders',
+    icon: 'assignment',
+    to: 'My orders',
+    forRestaurantOnly: true,
   },
   {
     title: 'Logout',
@@ -83,8 +100,8 @@ export default defineComponent({
   },
   computed: {
     accountType() {
-      const restaurantId = Cookies.get('restaurantId');
-      const clientId = Cookies.get('clientId');
+      const restaurantId = Number(Cookies.get('restaurantId'));
+      const clientId = Number(Cookies.get('clientId'));
       if (restaurantId) {
         return 'restaurant';
       }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <MenuList />
+    <MenuList :id="id" />
   </div>
 </template>
 
@@ -10,6 +10,7 @@ import MenuList from 'components/Menu/MenuList.vue';
 
 const ViewMenu = defineComponent({
   name: 'ViewMenu',
+  props: ['id'],
   components: {
     MenuList,
   },

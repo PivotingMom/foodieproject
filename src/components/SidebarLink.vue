@@ -1,6 +1,11 @@
 <template>
+  <!-- add "hidden" class if the menu item is for restaruant only with tenary operator -->
   <q-item
-    class="text-subtitle1"
+    :class="[
+      'text-subtitle1',
+      forRestaurantOnly && accountType === 'client' ? 'hidden' : false,
+      forClientOnly && accountType === 'restaurant' ? 'hidden' : false
+    ]"
     clickable
     @click="handleClicked"
     :to="{ name: to }"
@@ -32,6 +37,17 @@ export default defineComponent({
     to: {
       type: String,
       default: 'auth',
+    },
+    forClientOnly: {
+      type: Boolean,
+      default: false,
+    },
+    forRestaurantOnly: {
+      type: Boolean,
+      default: false,
+    },
+    accountType: {
+      type: String,
     },
   },
   methods: {

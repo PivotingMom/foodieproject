@@ -6,36 +6,48 @@
           <q-btn @click="goToLogin" label="Get Started" color="dark" />
         </q-toolbar>
       </q-header>
-<div class="column">
-  <q-card bordered flat class="menuList q-mt-md full-width">
-    <q-card-section>
-      <h6>Menu List</h6>
-      <div class="row q-gutter-md">
-        <div class="col-md-3 col-3" v-for="(item, index) in menus" :key="index">
-          <q-card  bordered flat>
-            <q-img height="200px" :src="item.imageUrl">
-              <div class="absolute-bottom text-subtitle2 text-center">
-                {{ item.name }} - {{ item.price }}
-                <div>
-                  {{ item.description }}
-                </div>
-                <div>
-                  <q-btn @click="deleteItem(item.id)" v-if="restaurantId"
-                  icon="delete" rounded flat />
-                  <q-btn @click="editItem(item)" v-if="restaurantId" icon="edit" rounded flat />
+      <div class="column">
+        <q-card bordered flat class="menuList q-mt-md full-width">
+          <q-card-section>
+            <h6>Menu List</h6>
+            <div class="row q-gutter-md">
+              <div class="col-md-3 col-3" v-for="(item, index) in menus" :key="index">
+                <q-card  bordered flat>
+                  <q-img height="200px" :src="item.imageUrl">
+                    <div class="absolute-bottom text-subtitle2 text-center">
+                      {{ item.name }} - {{ item.price }}
+                      <div>
+                        {{ item.description }}
+                      </div>
+                      <div>
+                        <q-btn
+                          @click="deleteItem(item.id)"
+                          v-if="canUpdateAndDelete(item.restaurantId)"
+                        icon="delete" rounded flat />
+                        <q-btn
+                          @click="editItem(item)"
+                          v-if="canUpdateAndDelete(item.restaurantId)"
+                          icon="edit"
+                          rounded flat
+                        />
+                        <q-btn
+                          @click="add(item)"
+                          v-if="canAddToCart"
+                          icon="cart"
+                          label="Add to cart"
+                        />
+                      </div>
+                    </div>
+                  </q-img>
 
-                </div>
+                </q-card>
               </div>
-            </q-img>
-
-          </q-card>
-        </div>
+            </div>
+          </q-card-section>
+        </q-card>
+        <UpdateMenu :isActive="showPopup" :menuItem="selectedItem" @close="closePopup" />
       </div>
-    </q-card-section>
-  </q-card>
-  <UpdateMenu :isActive="showPopup" :menuItem="selectedItem" @close="closePopup" />
-</div>
-</q-layout>
+  </q-layout>
 </template>
 
 <script>
@@ -57,15 +69,23 @@ const MenuList = defineComponent({
     };
   },
   computed: {
-    ...mapState(useMainStore, ['restaurantId', 'menus']),
+    ...mapState(useMainStore, ['restaurantId', 'clientId', 'menus', 'token']),
+    canAddToCart() {
+      if (Number(this.clientId) && this.token) {
+        return true;
+      }
+      return false;
+    },
   },
   mounted() {
-    console.log(this.$query);
     const id = this.id || this.restaurantId;
     this.getMenus(id);
   },
   methods: {
-    ...mapActions(useMainStore, ['getMenus', 'deleteMenu', 'getRestaurant']),
+    ...mapActions(useMainStore, ['getMenus', 'deleteMenu', 'getRestaurant', 'addToCart']),
+    canUpdateAndDelete(restaurantId) {
+      return this.restaurantId && this.restaurantId === restaurantId;
+    },
     goToLogin() {
       this.$router.push({ name: 'auth' });
     },
@@ -74,6 +94,9 @@ const MenuList = defineComponent({
         menuId,
       };
       await this.deleteMenu(payload);
+    },
+    add(item) {
+      this.addToCart(item);
     },
     editItem(item) {
       this.selectedItem = item;

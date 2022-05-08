@@ -12,6 +12,7 @@ export const useMainStore = defineStore('mainStore', {
     orders: [],
     menus: [],
     restaurants: [],
+    cart: [],
   }),
   actions: {
     async login(payload, accountType) {
@@ -281,6 +282,17 @@ export const useMainStore = defineStore('mainStore', {
         return 'client';
       }
       return null;
+    },
+    addToCart(item) {
+      const itemId = item.id;
+      const alreadyExists = this.cart.find((id) => id === itemId);
+      if (alreadyExists) {
+        Notify.create({ type: 'info', message: 'This item is already in your cart', position: 'center' });
+        return false;
+      }
+      this.cart.push(item.id);
+      Notify.create({ type: 'positive', message: 'Item added', position: 'center' });
+      return true;
     },
     async deleteClientProfile() {
       Loading.show();
