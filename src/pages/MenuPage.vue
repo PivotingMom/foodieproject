@@ -1,7 +1,7 @@
 <template>
-  <q-page class="flex column" padding>
+  <q-page class="flex" padding>
     <div class="q-mb-md">
-      <q-btn @click="showCreateMenu" label="Show Menu Form" color="dark" />
+      <q-btn @click="showCreateMenu" v-if="restaurantId" label="Show Menu" color="dark" />
     </div>
     <CreateMenu v-if="showForm" />
     <MenuList />

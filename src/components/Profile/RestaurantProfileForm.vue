@@ -109,7 +109,7 @@ const RestaurantProfileForm = defineComponent({
     this.setDefaultValues();
   },
   methods: {
-    ...mapActions(useMainStore, ['getRestaurant', 'getAccountType']),
+    ...mapActions(useMainStore, ['getRestaurant', 'getAccountType', 'updateProfile']),
     setDefaultValues() {
       this.form.name = this.restaurantDetails.name;
       this.form.address = this.restaurantDetails.address;

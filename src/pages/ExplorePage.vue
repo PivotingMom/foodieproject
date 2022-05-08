@@ -8,7 +8,7 @@
       </q-header>
       <q-page-container>
         <q-page class="column" padding>
-          <h4>Hello, Welcome to...</h4>
+          <h4>Your favourites tastes, delivered.</h4>
           <h5>Explore Restaurants</h5>
           <div class="row q-col-gutter-md">
             <div class="col-md-3" v-for="(item, index) in restaurants" :key="index">
@@ -61,3 +61,12 @@ const ExplorePage = defineComponent({
 
 export default ExplorePage;
 </script>
+
+<style lang="scss">
+// .right-bg {
+//   background-image: url("https://cdn.dribbble.com/users/283823/screenshots/10829285/media/8185d7546a272ed31b70bc7665498b0b.png");
+//   background-repeat: no-repeat;
+//   background-position: center;
+//   background-size: cover;
+// }
+</style>

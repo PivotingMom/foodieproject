@@ -60,6 +60,11 @@ const sidebarlinks = [
     to: 'menu',
   },
   {
+    title: 'my Order',
+    icon: 'assignment',
+    to: 'My orders',
+  },
+  {
     title: 'Logout',
     icon: 'logout',
     to: 'logout',

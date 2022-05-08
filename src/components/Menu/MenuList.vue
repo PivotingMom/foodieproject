@@ -1,4 +1,11 @@
 <template>
+    <q-layout view="lHh Lpr lFf">
+      <q-header class="chop__primary" elevated>
+        <q-toolbar>
+          <q-toolbar-title> Chops App </q-toolbar-title>
+          <q-btn @click="goToLogin" label="Get Started" color="dark" />
+        </q-toolbar>
+      </q-header>
 <div class="column">
   <q-card bordered flat class="menuList q-mt-md full-width">
     <q-card-section>
@@ -13,11 +20,14 @@
                   {{ item.description }}
                 </div>
                 <div>
-                  <q-btn @click="deleteItem(item.id)" icon="delete" rounded flat />
-                  <q-btn @click="editItem(item)" icon="edit" rounded flat />
+                  <q-btn @click="deleteItem(item.id)" v-if="restaurantId"
+                  icon="delete" rounded flat />
+                  <q-btn @click="editItem(item)" v-if="restaurantId" icon="edit" rounded flat />
+
                 </div>
               </div>
             </q-img>
+
           </q-card>
         </div>
       </div>
@@ -25,6 +35,7 @@
   </q-card>
   <UpdateMenu :isActive="showPopup" :menuItem="selectedItem" @close="closePopup" />
 </div>
+</q-layout>
 </template>
 
 <script>
@@ -54,12 +65,15 @@ const MenuList = defineComponent({
     this.getMenus(id);
   },
   methods: {
-    ...mapActions(useMainStore, ['getMenus', 'deleteMenu']),
+    ...mapActions(useMainStore, ['getMenus', 'deleteMenu', 'getRestaurant']),
+    goToLogin() {
+      this.$router.push({ name: 'auth' });
+    },
     async deleteItem(menuId) {
-      const palyload = {
+      const payload = {
         menuId,
       };
-      await this.deleteMenu(palyload);
+      await this.deleteMenu(payload);
     },
     editItem(item) {
       this.selectedItem = item;

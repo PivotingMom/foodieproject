@@ -292,6 +292,7 @@ export const useMainStore = defineStore('mainStore', {
         if (response.status === 204) {
           this.removeCookie('token');
           this.removeCookie('clientId');
+          this.removeCookie('menuId');
           this.removeCookie('restaurantId');
           Notify.create({ type: 'positive', message: 'Profile deleted successfully', position: 'center' });
           return true;
