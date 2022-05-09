@@ -83,7 +83,7 @@ COMPONENT
   -> data
     -> data properties that we bind to elements
   -> computed
-    -> evaluate either data paroperties or methods
+    -> evaluate either data properties or methods
   -> methods
     -> define component actions / response to events
   -> created

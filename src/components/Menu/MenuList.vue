@@ -1,16 +1,16 @@
 <template>
-    <q-layout view="lHh Lpr lFf">
+<!--     <q-layout view="lHh Lpr lFf">
       <q-header class="chop__primary" elevated>
         <q-toolbar>
           <q-toolbar-title> Chops App </q-toolbar-title>
           <q-btn @click="goToLogin" label="Get Started" color="dark" />
         </q-toolbar>
-      </q-header>
+      </q-header> -->
       <div class="column">
         <q-card bordered flat class="menuList q-mt-md full-width">
           <q-card-section>
             <h6>Menu List</h6>
-            <div class="row q-gutter-md">
+            <div v-if="menus.length" class="row q-gutter-md">
               <div class="col-md-3 col-3" v-for="(item, index) in menus" :key="index">
                 <q-card  bordered flat>
                   <q-img height="200px" :src="item.imageUrl">
@@ -24,30 +24,34 @@
                           @click="deleteItem(item.id)"
                           v-if="canUpdateAndDelete(item.restaurantId)"
                         icon="delete" rounded flat />
-                        <q-btn
-                          @click="editItem(item)"
-                          v-if="canUpdateAndDelete(item.restaurantId)"
-                          icon="edit"
-                          rounded flat
-                        />
-                        <q-btn
-                          @click="add(item)"
-                          v-if="canAddToCart"
-                          icon="cart"
-                          label="Add to cart"
-                        />
+                              <q-btn
+                      @click="editItem(item)"
+                      v-if="canUpdateAndDelete(item.restaurantId)"
+                      icon="edit"
+                      rounded
+                      flat
+                    />
+<q-btn
+                      class="q-mt-lg"
+                      size="sm"
+                      @click="add(item)"
+                      v-if="canAddToCart"
+                      color="amber"
+                      icon="shopping_cart"
+                      label="Add to cart"
+                    />
                       </div>
                     </div>
                   </q-img>
 
                 </q-card>
-              </div>
-            </div>
+          </div>
+        </div>
+        <div v-else>No Menu Items yet</div>
           </q-card-section>
         </q-card>
         <UpdateMenu :isActive="showPopup" :menuItem="selectedItem" @close="closePopup" />
       </div>
-  </q-layout>
 </template>
 
 <script>
