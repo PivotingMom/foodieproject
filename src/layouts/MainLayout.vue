@@ -72,7 +72,7 @@ const sidebarlinks = [
   {
     title: 'My Order',
     icon: 'assignment',
-    to: 'My orders',
+    to: 'orders',
     forClientOnly: true,
   },
   {

@@ -1,34 +1,30 @@
 <template>
-    <q-layout view="lHh Lpr lFf">
-      <q-header class="chop__primary" elevated>
-        <q-toolbar>
-          <q-toolbar-title> Chops App </q-toolbar-title>
-          <q-btn @click="goToLogin" label="Get Started" color="dark" />
-        </q-toolbar>
-      </q-header>
-      <q-page-container>
-        <q-page class="column" padding>
-          <h4>Your favourites tastes, delivered.</h4>
-          <h5>Explore Restaurants</h5>
-          <div class="row q-col-gutter-md">
-            <div class="col-md-3" v-for="(item, index) in restaurants" :key="index">
-          <q-card  bordered flat>
-            <q-img height="200px" :src="item.imageUrl">
-              <div class="absolute-bottom text-subtitle2 text-center">
-                {{ item.name }} - {{ item.phoneNum }}
-                <div class="q-mt-md">
-                  <q-btn @click="goToMenu(item.restaurantId)" label="View Menu" color="dark" />
-                </div>
+  <q-page class="column" padding>
+    <h4>Your favourites tastes, delivered.</h4>
+    <h5>Explore Restaurants</h5>
+    <div class="row q-col-gutter-md">
+      <div
+        class="col-md-3 col-lg-3 col-xl-3 col-sm-12 col-xs-12"
+        v-for="(item, index) in restaurants"
+        :key="index"
+      >
+        <q-card bordered flat>
+          <q-img height="200px" :src="item.imageUrl">
+            <div class="absolute-bottom text-subtitle2 text-center">
+              {{ item.name }} - {{ item.phoneNum }}
+              <div class="q-mt-md">
+                <q-btn
+                  @click="goToMenu(item.restaurantId)"
+                  label="View Menu"
+                  color="dark"
+                />
               </div>
-            </q-img>
-          </q-card>
             </div>
-
-          </div>
-        </q-page>
-      </q-page-container>
-    </q-layout>
-
+          </q-img>
+        </q-card>
+      </div>
+    </div>
+  </q-page>
 </template>
 
 <script>
@@ -39,8 +35,7 @@ import { useMainStore } from 'stores/mainStore';
 const ExplorePage = defineComponent({
   name: 'ExplorePage',
   data() {
-    return {
-    };
+    return {};
   },
   computed: {
     ...mapState(useMainStore, ['restaurants']),
@@ -50,15 +45,11 @@ const ExplorePage = defineComponent({
   },
   methods: {
     ...mapActions(useMainStore, ['getRestaurant']),
-    goToLogin() {
-      this.$router.push({ name: 'auth' });
-    },
     goToMenu(id) {
-      this.$router.push({ name: 'view-menu', params: { id } });
+      this.$router.push({ name: 'view-menu', params: { restaurantId: id } });
     },
   },
 });
-
 export default ExplorePage;
 </script>
 

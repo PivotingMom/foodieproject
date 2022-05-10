@@ -52,5 +52,6 @@ const ExploreLayout = defineComponent({
     },
   },
 });
+
 export default ExploreLayout;
 </script>

@@ -2,7 +2,7 @@
 <template>
   <q-page class="full-height">
     <div class="row window-height">
-      <div class="col flex flex-center">
+      <div class="col-md-6 col-lg-6 col-xl-6 col-sm-12 col-xs-12 flex flex-center">
         <Login @hide-login="handleHideLogin" v-if="showLogin" />
         <Register @show-login="handleShowLogin" v-else />
       </div>

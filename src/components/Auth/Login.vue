@@ -1,6 +1,6 @@
 <!-- New client login form page, template is from quasar-->
 <template>
-  <div class="login">
+  <div :class="$q.platform.is.mobile ? 'full-width' : 'login'">
     <h4>Login</h4>
     <q-card flat bordered>
       <q-card-section>
@@ -33,7 +33,6 @@
     </q-card>
     <q-btn
       flat
-      no-caps
       color="primary"
       label="I'm new here"
       @click="goToRegisterPage"
@@ -71,7 +70,7 @@ const LoginPage = defineComponent({
       if (requestWasSuccessful === true) {
         this.$router.replace({ name: 'profile' });
       }
-    /*  <!-- async is always accompanied by an await means -
+      /*  <!-- async is always accompanied by an await means -
      wait for the promise before you run --> */
     },
     goToRegisterPage() {

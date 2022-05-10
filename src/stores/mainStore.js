@@ -12,7 +12,7 @@ export const useMainStore = defineStore('mainStore', {
     orders: [],
     menus: [],
     restaurants: [],
-    cart: [],
+    cart: JSON.parse(localStorage.getItem('cart')) || [],
   }),
   actions: {
     async login(payload, accountType) {
@@ -85,6 +85,7 @@ export const useMainStore = defineStore('mainStore', {
           Cookies.remove('token');
           Cookies.remove('restaurantId');
           Cookies.remove('clientId');
+          localStorage.clear();
 
           return true;
         }
@@ -161,6 +162,8 @@ export const useMainStore = defineStore('mainStore', {
       } catch (error) {
         Notify.create({ type: 'negative', message: 'An error occurred', position: 'center' });
         return false;
+      } finally {
+        Loading.hide();
       }
     },
     async createMenu(payload) {
@@ -271,6 +274,46 @@ export const useMainStore = defineStore('mainStore', {
         Loading.hide();
       }
     },
+    async placeClientOrder(payload) {
+      Loading.show();
+
+      try {
+        api.defaults.headers.token = Cookies.get('token');
+        const response = await api.post('/api/order', payload);
+
+        if (response.status === 201) {
+          Notify.create({ type: 'positive', message: 'Order placed successfully', position: 'center' });
+          this.cart = [];
+          localStorage.removeItem('cart');
+          return true;
+        }
+        return false;
+      } catch (error) {
+        Notify.create({ type: 'negative', message: 'Order placement failed', position: 'center' });
+        return false;
+      } finally {
+        Loading.hide();
+      }
+    },
+    async updateOrder(payload) {
+      Loading.show();
+
+      try {
+        api.defaults.headers.token = Cookies.get('token');
+        const response = await api.patch('/api/order', payload);
+
+        if (response.status === 200 || response.status === 204) {
+          Notify.create({ type: 'positive', message: 'Order updated successfully', position: 'center' });
+          return true;
+        }
+        return false;
+      } catch (error) {
+        Notify.create({ type: 'negative', message: 'Order update failed', position: 'center' });
+        return false;
+      } finally {
+        Loading.hide();
+      }
+    },
     getAccountType() {
       const restaurantId = Number(Cookies.get('restaurantId'));
       const clientId = Number(Cookies.get('clientId'));
@@ -284,23 +327,22 @@ export const useMainStore = defineStore('mainStore', {
       return null;
     },
     addToCart(item) {
-      const itemId = item.id;
-      const alreadyExists = this.cart.find((id) => id === itemId);
+      const alreadyExists = this.cart.find((value) => value.menuId === item.menuId);
       if (alreadyExists) {
         Notify.create({ type: 'info', message: 'This item is already in your cart', position: 'center' });
-        return false;
+      } else {
+        this.cart.push(item);
+        Notify.create({ type: 'positive', message: 'Item added', position: 'center' });
       }
-      this.cart.push(item.id);
-      Notify.create({ type: 'positive', message: 'Item added', position: 'center' });
-      return true;
+      localStorage.setItem('cart', JSON.stringify(this.cart));
     },
     async deleteClientProfile() {
       Loading.show();
 
       try {
         api.defaults.headers.token = Cookies.get('token');
-        const response = await api.delete('/api/client');
-
+        const response = await api.delete('/api/client', {});
+        // send an empty string //
         if (response.status === 204) {
           this.removeCookie('token');
           this.removeCookie('clientId');

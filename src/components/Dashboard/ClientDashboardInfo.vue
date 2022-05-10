@@ -1,8 +1,8 @@
 <template>
-  <q-card class="my-card">
+  <q-card>
     <q-card-section class="text-body1">
       <q-icon size="30px" name="shopping_cart" />
-      You have {{ totalOrders }} Orders
+      You have {{ getTotalOrders }} Orders
     </q-card-section>
   </q-card>
 </template>
@@ -15,7 +15,7 @@ import { useMainStore } from 'stores/mainStore';
 const ClientDashboardInfo = defineComponent({
   name: 'ClientDashboardInfo',
   computed: {
-    ...mapState(useMainStore, ['totalOrders']),
+    ...mapState(useMainStore, ['getTotalOrders']),
   },
 });
 export default ClientDashboardInfo;

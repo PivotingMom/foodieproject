@@ -1,5 +1,5 @@
 <template>
-  <q-card class="clientProfileForm">
+  <q-card :class="[$q.platform.is.mobile ? 'full-width' : 'desktop-width']">
     <div class="flex justify-center q-pt-md">
       <img :src="form.pictureUrl" alt="" class="avatar" width="200" />
     </div>
@@ -59,7 +59,8 @@
     </q-card-section>
     <q-card-section>
       <q-btn
-      @click="deleteProfile"
+        class="full-width"
+        @click="deleteProfile"
         label="Delete Profile"
         type="button"
         color="negative"
@@ -135,16 +136,12 @@ const ClientProfileForm = defineComponent({
         this.$router.replace({ name: 'register' });
       }
     },
-
   },
 });
 export default ClientProfileForm;
 </script>
 
 <style lang="scss">
-.clientProfileForm {
-  width: 500px;
-}
 .avatar {
   border-radius: 5%;
 }
