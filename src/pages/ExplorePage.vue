@@ -4,7 +4,7 @@
     <h5>Explore Restaurants</h5>
     <div class="row q-col-gutter-md">
       <div
-        class="col-md-3 col-lg-3 col-xl-3 col-sm-12 col-xs-12"
+        class="col-md-3 col-lg-3 col-xl-3 col-xs-12 col-sm-12"
         v-for="(item, index) in restaurants"
         :key="index"
       >
