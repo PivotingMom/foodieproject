@@ -1,7 +1,12 @@
 <template>
   <q-page class="flex" padding>
     <div class="q-mb-md">
-      <q-btn @click="showCreateMenu" v-if="restaurantId" label="Show Menu" color="dark" />
+      <q-btn
+        @click="showCreateMenu"
+        v-if="restaurantId"
+        label="Show Menu"
+        color="dark"
+      />
     </div>
     <CreateMenu v-if="showForm" />
     <MenuList />
@@ -20,8 +25,13 @@ const MenuPage = defineComponent({
   },
   data() {
     return {
-      showForm: false,
+      showForm: true,
     };
+  },
+  computed: {
+    restaurantId() {
+      return this.showForm === 'restaurant';
+    },
   },
   methods: {
     showCreateMenu() {
@@ -29,10 +39,7 @@ const MenuPage = defineComponent({
     },
   },
 });
-
 export default MenuPage;
 </script>
 
-<style lang="sass" scoped>
-
-</style>
+<style lang="sass" scoped></style>

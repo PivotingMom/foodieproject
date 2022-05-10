@@ -115,7 +115,11 @@ export const useMainStore = defineStore('mainStore', {
         }
         return false;
       } catch (error) {
-        Notify.create({ type: 'negative', message: 'An error occurred', position: 'center' });
+        Notify.create({
+          type: 'negative',
+          message: 'An error occurred',
+          position: 'center',
+        });
         return true;
       } finally {
         Loading.hide();
@@ -141,7 +145,11 @@ export const useMainStore = defineStore('mainStore', {
         }
         return false;
       } catch (error) {
-        Notify.create({ type: 'negative', message: 'An error occurred', position: 'center' });
+        Notify.create({
+          type: 'negative',
+          message: 'An error occurred',
+          position: 'center',
+        });
         return true;
       } finally {
         Loading.hide();
@@ -160,7 +168,11 @@ export const useMainStore = defineStore('mainStore', {
         }
         return false;
       } catch (error) {
-        Notify.create({ type: 'negative', message: 'An error occurred', position: 'center' });
+        Notify.create({
+          type: 'negative',
+          message: 'An error occurred',
+          position: 'center',
+        });
         return false;
       } finally {
         Loading.hide();
@@ -183,7 +195,11 @@ export const useMainStore = defineStore('mainStore', {
 
         return false;
       } catch (error) {
-        Notify.create({ type: 'negative', message: 'menu creation failed', position: 'center' });
+        Notify.create({
+          type: 'negative',
+          message: 'menu creation failed',
+          position: 'center',
+        });
         return false;
       } finally {
         Loading.hide();
@@ -197,12 +213,20 @@ export const useMainStore = defineStore('mainStore', {
         const response = await api.delete('/api/menu', payload);
 
         if (response.status === 204) {
-          Notify.create({ type: 'positive', message: 'menu deleted', position: 'center' });
+          Notify.create({
+            type: 'positive',
+            message: 'menu deleted',
+            position: 'center',
+          });
           return true;
         }
         return false;
       } catch (error) {
-        Notify.create({ type: 'negative', message: 'menu delete failed', position: 'center' });
+        Notify.create({
+          type: 'negative',
+          message: 'menu delete failed',
+          position: 'center',
+        });
         return false;
       } finally {
         Loading.hide();
@@ -216,12 +240,20 @@ export const useMainStore = defineStore('mainStore', {
         const response = await api.patch('/api/menu', payload);
 
         if (response.status === 200) {
-          Notify.create({ type: 'positive', message: 'menu updated successfully', position: 'center' });
+          Notify.create({
+            type: 'positive',
+            message: 'menu updated successfully',
+            position: 'center',
+          });
           return true;
         }
         return false;
       } catch (error) {
-        Notify.create({ type: 'negative', message: 'menu update failed', position: 'center' });
+        Notify.create({
+          type: 'negative',
+          message: 'menu update failed',
+          position: 'center',
+        });
         return false;
       } finally {
         Loading.hide();
@@ -249,7 +281,11 @@ export const useMainStore = defineStore('mainStore', {
         }
         return false;
       } catch (error) {
-        Notify.create({ type: 'negative', message: 'no menu fetched', position: 'center' });
+        Notify.create({
+          type: 'negative',
+          message: 'no menu fetched',
+          position: 'center',
+        });
         return false;
       } finally {
         Loading.hide();
@@ -263,12 +299,20 @@ export const useMainStore = defineStore('mainStore', {
         const response = await api.patch(`/api/${accountType}`, payload);
 
         if (response.status === 200) {
-          Notify.create({ type: 'positive', message: 'Profile update successfully', position: 'center' });
+          Notify.create({
+            type: 'positive',
+            message: 'Profile update successfully',
+            position: 'center',
+          });
           return true;
         }
         return false;
       } catch (error) {
-        Notify.create({ type: 'negative', message: 'Profile update failed', position: 'center' });
+        Notify.create({
+          type: 'negative',
+          message: 'Profile update failed',
+          position: 'center',
+        });
         return false;
       } finally {
         Loading.hide();
@@ -282,14 +326,22 @@ export const useMainStore = defineStore('mainStore', {
         const response = await api.post('/api/order', payload);
 
         if (response.status === 201) {
-          Notify.create({ type: 'positive', message: 'Order placed successfully', position: 'center' });
+          Notify.create({
+            type: 'positive',
+            message: 'Order placed successfully',
+            position: 'center',
+          });
           this.cart = [];
           localStorage.removeItem('cart');
           return true;
         }
         return false;
       } catch (error) {
-        Notify.create({ type: 'negative', message: 'Order placement failed', position: 'center' });
+        Notify.create({
+          type: 'negative',
+          message: 'Order placement failed',
+          position: 'center',
+        });
         return false;
       } finally {
         Loading.hide();
@@ -303,12 +355,20 @@ export const useMainStore = defineStore('mainStore', {
         const response = await api.patch('/api/order', payload);
 
         if (response.status === 200 || response.status === 204) {
-          Notify.create({ type: 'positive', message: 'Order updated successfully', position: 'center' });
+          Notify.create({
+            type: 'positive',
+            message: 'Order updated successfully',
+            position: 'center',
+          });
           return true;
         }
         return false;
       } catch (error) {
-        Notify.create({ type: 'negative', message: 'Order update failed', position: 'center' });
+        Notify.create({
+          type: 'negative',
+          message: 'Order update failed',
+          position: 'center',
+        });
         return false;
       } finally {
         Loading.hide();
@@ -327,12 +387,22 @@ export const useMainStore = defineStore('mainStore', {
       return null;
     },
     addToCart(item) {
-      const alreadyExists = this.cart.find((value) => value.menuId === item.menuId);
+      const alreadyExists = this.cart.find(
+        (value) => value.menuId === item.menuId,
+      );
       if (alreadyExists) {
-        Notify.create({ type: 'info', message: 'This item is already in your cart', position: 'center' });
+        Notify.create({
+          type: 'info',
+          message: 'This item is already in your cart',
+          position: 'center',
+        });
       } else {
         this.cart.push(item);
-        Notify.create({ type: 'positive', message: 'Item added', position: 'center' });
+        Notify.create({
+          type: 'positive',
+          message: 'Item added',
+          position: 'center',
+        });
       }
       localStorage.setItem('cart', JSON.stringify(this.cart));
     },
@@ -342,18 +412,26 @@ export const useMainStore = defineStore('mainStore', {
       try {
         api.defaults.headers.token = Cookies.get('token');
         const response = await api.delete('/api/client', {});
-        // send an empty string //
+
         if (response.status === 204) {
           this.removeCookie('token');
           this.removeCookie('clientId');
           this.removeCookie('menuId');
           this.removeCookie('restaurantId');
-          Notify.create({ type: 'positive', message: 'Profile deleted successfully', position: 'center' });
+          Notify.create({
+            type: 'positive',
+            message: 'Profile deleted successfully',
+            position: 'center',
+          });
           return true;
         }
         return false;
       } catch (error) {
-        Notify.create({ type: 'negative', message: 'Profile delete failed', position: 'center' });
+        Notify.create({
+          type: 'negative',
+          message: 'Profile delete failed',
+          position: 'center',
+        });
         return false;
       } finally {
         Loading.hide();
@@ -372,6 +450,5 @@ export const useMainStore = defineStore('mainStore', {
     getTotalOrders: (state) => state.orders.length,
     getTotalMenus: (state) => state.menus.length,
     getRestaurantId: (state) => state.restaurantId,
-
   },
 });

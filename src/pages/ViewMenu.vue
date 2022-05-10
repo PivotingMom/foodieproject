@@ -18,6 +18,5 @@ const ViewMenu = defineComponent({
     RestaurantDetails,
   },
 });
-
 export default ViewMenu;
 </script>

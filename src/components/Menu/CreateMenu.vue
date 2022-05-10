@@ -82,7 +82,6 @@ const CreateMenu = defineComponent({
     },
   },
 });
-
 export default CreateMenu;
 </script>
 
