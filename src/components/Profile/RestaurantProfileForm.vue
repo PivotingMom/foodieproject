@@ -1,5 +1,5 @@
 <template>
-  <q-card class="restaurantProfileForm">
+  <q-card :class="[$q.platform.is.mobile? 'full-width' : 'restaurantProfileForm']">
     <q-card-section>
       <q-form @submit="handleSubmit" class="q-gutter-md">
         <q-input

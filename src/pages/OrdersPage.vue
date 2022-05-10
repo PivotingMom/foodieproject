@@ -20,6 +20,9 @@
         </q-item-section>
         <q-item-section side top>
           <q-badge color="teal" :label="getStatus(item)" />
+          <div
+            :class="['flex', $q.platform.is.mobile ? 'column' : false]"
+          ></div>
           <div class="flex">
             <q-btn
               color="negative"

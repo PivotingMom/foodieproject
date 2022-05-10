@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-centre column">
+    <q-page class="flex items-center column q-pa-md">
     <h4>Update Your Profile</h4>
     <ClientForm v-if="isClient"/>
     <RestaurantForm v-else/>
